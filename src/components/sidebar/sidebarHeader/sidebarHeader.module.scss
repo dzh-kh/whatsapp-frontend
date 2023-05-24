@@ -1,0 +1,17 @@
+@import "../../../assets/styles/variables";
+
+.header {
+  padding: 10px 16px;
+  background-color: $app-bg;
+}
+
+.user_block {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 10px 0;
+
+  svg {
+    color: $gray;
+  }
+}

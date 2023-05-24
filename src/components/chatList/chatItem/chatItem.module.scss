@@ -1,0 +1,56 @@
+@import "../../../assets/styles/variables";
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.wrapper::after {
+  content: "";
+  border-bottom: 1px solid #f0f2f5;
+  display: block;
+  position: relative;
+  left: 5.4em;
+}
+
+.current_contact_item,
+.contact_item {
+  padding: 10px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 17px;
+}
+
+.current_contact_item {
+  background-color: $app-bg;
+}
+
+.contact_item::after {
+}
+
+.contact_item:hover {
+  background-color: $chat-hover;
+}
+
+.chat_info {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.3rem;
+  // border-bottom: 1px solid $app-bg;
+
+  // span {
+  //   background: #fff;
+  //   border-radius: 50%;
+  //   padding: 0.2rem 0.5rem;
+  //   margin-right: 0.2rem;
+  // }
+}
+.chat_name {
+  margin-right: 1rem;
+}
+.avatar {
+  border-radius: 50%;
+  margin: 0 1rem;
+}
