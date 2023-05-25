@@ -10,7 +10,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const appStore = setupStore();
 root.render(
   <React.StrictMode>
-    <Provider store={appStore}></Provider>
-    <RouterProvider router={router} />
+    <Provider store={appStore}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

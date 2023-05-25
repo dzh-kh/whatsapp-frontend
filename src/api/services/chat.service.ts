@@ -31,10 +31,11 @@ function setTimerForAsyncFn(callback: any, ms: number) {
 }
 
 const _transformChatData = (data: any) => {
+  data;
   return {
     ...data,
     avatar: data.avatar ? data.avatar : noAvatar,
-    name: data.avatar ? data.name : `8{data.chatId.slice(1, 11)}`,
+    name: data.avatar ? data.name : `${data.chatId.slice(0, 11)}`,
   };
 };
 
@@ -62,8 +63,8 @@ export const ChatService = {
     chatId: string
   ): Promise<ITextMessage> {
     const baseUrl = getBaseUrl("GetMessage");
-    console.log(idMessage);
-    console.log(chatId);
+    idMessage;
+    chatId;
     const { data } = await $api.post(`${baseUrl}`, { chatId, idMessage });
     return data;
   },
@@ -73,8 +74,9 @@ export const ChatService = {
     const { data } = await $api.post(`${baseUrl}`, { chatId, message });
     const mg = await setTimerForAsyncFn(
       async () => await this.getMessageById(data.idMessage, chatId),
-      3000
+      5000
     );
+    console.log(mg);
     return mg;
   },
 

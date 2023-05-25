@@ -1,6 +1,12 @@
 import React, { FC } from "react";
-import { IChatProps } from "./types";
 import styles from "./chatItem.module.scss";
+import IChat from "../../../types/chat.interface";
+
+export interface IChatProps {
+  chatData: IChat;
+  handleClick: Function;
+  currentChat: string;
+}
 
 const ChatItem: FC<IChatProps> = ({ chatData, currentChat, handleClick }) => {
   const { avatar, name, chatId } = chatData;
@@ -13,7 +19,7 @@ const ChatItem: FC<IChatProps> = ({ chatData, currentChat, handleClick }) => {
             : styles.current_contact_item
         }
         onClick={() => {
-          handleClick();
+          handleClick(chatId);
           // setUnreadMsgCount(0);
         }}
       >
@@ -22,7 +28,7 @@ const ChatItem: FC<IChatProps> = ({ chatData, currentChat, handleClick }) => {
           className={styles.avatar}
           width={50}
           height={50}
-          alt=""
+          alt="avatar"
         />
         <div className={styles.chat_info}>
           <span className={styles.chat_name}>{name}</span>

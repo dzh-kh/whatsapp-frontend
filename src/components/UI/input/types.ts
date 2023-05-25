@@ -5,7 +5,7 @@ import { IconType } from "react-icons";
 export default interface IInputProps {
   placeholder?: string;
   name?: string;
-  errors?: any;
+  error?: any;
   type?: string;
   children?: ReactElement<IconType>;
   value?: any;

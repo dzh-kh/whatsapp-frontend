@@ -11,17 +11,25 @@
   padding: 10px 16px;
   background-color: $app-bg;
   height: 60px;
+  display: flex;
+  align-items: center;
   &::before {
     content: "";
     border-bottom: 1px solid #8696a0;
   }
 }
 
-.user_block {
+.chat_avatar {
+  border-radius: 50%;
+  height: 50px;
+}
+
+.chat_block {
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
   padding: 10px 0;
+  gap: 20px;
 
   svg {
     color: $gray;
