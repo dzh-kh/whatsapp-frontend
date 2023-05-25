@@ -6,7 +6,7 @@ import SidebarHeader from "./sidebarHeader/SidebarHeader";
 
 const Sidebar: FC = () => {
   return (
-    <div>
+    <div className={styles.sidebar}>
       <SidebarHeader />
       <SearchBar />
       <ChatList />

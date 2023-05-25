@@ -9,9 +9,9 @@ const SearchBar: FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setNumber(e.target.value);
   const hadleClick = (e: React.MouseEvent<SVGAElement>) => {
-    const chat = ChatService.getChatInfo(number)
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+    const chat = ChatService.getChatInfo(number).then((res) =>
+      console.log(res)
+    );
     console.log(chat);
   };
   return (

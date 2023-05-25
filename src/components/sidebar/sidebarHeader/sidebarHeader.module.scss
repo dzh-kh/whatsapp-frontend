@@ -3,6 +3,7 @@
 .header {
   padding: 10px 16px;
   background-color: $app-bg;
+  height: 60px;
 }
 
 .user_block {
@@ -13,5 +14,36 @@
 
   svg {
     color: $gray;
+  }
+}
+
+.menu_wrapper {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  padding: 0.5rem 0;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  background: #fff;
+  right: 0;
+  z-index: 1000;
+  font-size: 14px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+}
+
+.menu_item {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding-right: 58px;
+  padding-left: 24px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background-color: $chat-hover;
   }
 }

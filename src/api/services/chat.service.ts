@@ -3,6 +3,7 @@ import getChatId from "../../utils/functions/getChatId";
 import { IChat } from "../../types/chat.interface";
 import { ITextNotification } from "../../types/textNotification.interface";
 import { ITextMessage } from "./../../types/textMessage.interface";
+import noAvatar from "../../assets/images/no_avatar.png";
 
 // const idInstance = localStorage.getItem("idInstance");
 // const apiTokenInstance = localStorage.getItem("apiTokenInstance");
@@ -21,12 +22,28 @@ const _transformMessageData = (data: any) => {
   };
 };
 
+function setTimerForAsyncFn(callback: any, ms: number) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(callback());
+    }, ms);
+  });
+}
+
+const _transformChatData = (data: any) => {
+  return {
+    ...data,
+    avatar: data.avatar ? data.avatar : noAvatar,
+    name: data.avatar ? data.name : `8{data.chatId.slice(1, 11)}`,
+  };
+};
+
 export const ChatService = {
   async getChatInfo(phone: string): Promise<IChat> {
     const baseUrl = getBaseUrl("getContactInfo");
     const chatId = getChatId(phone);
     const { data } = await $api.post(`${baseUrl}`, { chatId });
-    return { ...data };
+    return _transformChatData(data);
   },
 
   async getChatHistory(chatId: string, count = 10): Promise<ITextMessage[]> {
@@ -40,13 +57,25 @@ export const ChatService = {
     await $api.post(`${baseUrl}`, { chatId });
   },
 
-  async sendMessage(
-    chatId: string,
-    message: string
-  ): Promise<{ idMessage: string }> {
+  async getMessageById(
+    idMessage: string,
+    chatId: string
+  ): Promise<ITextMessage> {
+    const baseUrl = getBaseUrl("GetMessage");
+    console.log(idMessage);
+    console.log(chatId);
+    const { data } = await $api.post(`${baseUrl}`, { chatId, idMessage });
+    return data;
+  },
+
+  async sendMessage(chatId: string, message: string): Promise<any> {
     const baseUrl = getBaseUrl("SendMessage");
     const { data } = await $api.post(`${baseUrl}`, { chatId, message });
-    return data;
+    const mg = await setTimerForAsyncFn(
+      async () => await this.getMessageById(data.idMessage, chatId),
+      3000
+    );
+    return mg;
   },
 
   async receiveNotification(): Promise<ITextNotification> {

@@ -1,0 +1,85 @@
+@import "../../../assets/styles/variables";
+
+.form_wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  padding: 5px 16px;
+  background-color: $app-bg;
+  display: flex;
+  align-items: center;
+  svg {
+    color: $gray;
+    font-size: 24px;
+  }
+  .button {
+    position: absolute;
+    right: 0;
+    top: 30%;
+  }
+  input {
+    font-size: 16px;
+    background-color: white !important;
+    height: 42px;
+    margin-right: 20px;
+    border-radius: 8px;
+  }
+}
+
+.msg__wrapper {
+  display: flex;
+  flex-direction: column;
+  .message_item {
+    background: #fff;
+    svg {
+      display: none;
+    }
+  }
+}
+.message_item {
+  font-size: 15px;
+  display: flex;
+  flex-wrap: nowrap;
+  height: 33px;
+  padding: 0.4rem 0.6rem;
+  width: fit-content;
+  border-radius: 9px;
+  .message_item__info {
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 6px;
+  }
+}
+
+.message_item__time {
+  color: lightgray;
+  width: fit-content;
+  margin: 0.5rem 0 0.5rem 0.5rem;
+  font-size: small;
+  font-size: 11px;
+}
+
+.own_msg__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  .message_item {
+    svg {
+      margin-left: 0.2rem;
+      align-self: flex-end;
+    }
+    display: flex;
+    background: $message-primary;
+  }
+}
+
+.message_status__read {
+  fill: $light-blue;
+}
+
+.message_status__delivered,
+.message_status__pending {
+  fill: $light-gray;
+}

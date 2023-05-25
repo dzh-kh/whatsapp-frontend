@@ -1,0 +1,29 @@
+@import "../../assets/styles/variables";
+
+.chatBox {
+  width: 100%;
+  background-image: url("../../assets/images/chatBox-bg.jpeg");
+  border-left: 1px solid #d1d7db;
+  position: relative;
+}
+
+.header {
+  padding: 10px 16px;
+  background-color: $app-bg;
+  height: 60px;
+  &::before {
+    content: "";
+    border-bottom: 1px solid #8696a0;
+  }
+}
+
+.user_block {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 10px 0;
+
+  svg {
+    color: $gray;
+  }
+}
