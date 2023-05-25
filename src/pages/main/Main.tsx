@@ -7,7 +7,7 @@ const Main: FC = () => {
   return (
     <div className={styles.main}>
       <Sidebar />
-      <ChatBox />
+      <ChatBox chatId={"79380210921@c.us"} />
     </div>
   );
 };

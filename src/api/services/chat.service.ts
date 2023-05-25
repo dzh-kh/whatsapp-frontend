@@ -1,6 +1,6 @@
 import { $api } from "../http";
 import getChatId from "../../utils/functions/getChatId";
-import { IChat } from "../../types/chat.interface";
+import IChat from "../../types/chat.interface";
 import { ITextNotification } from "../../types/textNotification.interface";
 import { ITextMessage } from "./../../types/textMessage.interface";
 import noAvatar from "../../assets/images/no_avatar.png";
