@@ -5,14 +5,14 @@ import { ITextNotification } from "../../types/textNotification.interface";
 import { ITextMessage } from "./../../types/textMessage.interface";
 import noAvatar from "../../assets/images/no_avatar.png";
 
-// const idInstance = localStorage.getItem("idInstance");
-// const apiTokenInstance = localStorage.getItem("apiTokenInstance");
-
-const idInstance = "1101823894";
-const apiTokenInstance = "932a74533f114882bb11ceb906a67ada85b4114c5d794f2fab";
-
-const getBaseUrl = (path: string) =>
-  `/waInstance${idInstance}/${path}/${apiTokenInstance}`;
+const getBaseUrl = (path: string) => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    const userData = JSON.parse(user);
+    return `/waInstance${userData.idInstance}/${path}/${userData.apiTokenInstance}`;
+  }
+  return "";
+};
 
 const _transformMessageData = (data: any) => {
   return {
@@ -31,18 +31,16 @@ function setTimerForAsyncFn(callback: any, ms: number) {
 }
 
 const _transformChatData = (data: any) => {
-  data;
   return {
     ...data,
     avatar: data.avatar ? data.avatar : noAvatar,
-    name: data.avatar ? data.name : `${data.chatId.slice(0, 11)}`,
+    name: data.name ? data.name : `8${data.chatId.slice(1, 11)}`,
   };
 };
 
 export const ChatService = {
-  async getChatInfo(phone: string): Promise<IChat> {
+  async getChatInfo(chatId: string): Promise<IChat> {
     const baseUrl = getBaseUrl("getContactInfo");
-    const chatId = getChatId(phone);
     const { data } = await $api.post(`${baseUrl}`, { chatId });
     return _transformChatData(data);
   },
@@ -63,8 +61,6 @@ export const ChatService = {
     chatId: string
   ): Promise<ITextMessage> {
     const baseUrl = getBaseUrl("GetMessage");
-    idMessage;
-    chatId;
     const { data } = await $api.post(`${baseUrl}`, { chatId, idMessage });
     return data;
   },

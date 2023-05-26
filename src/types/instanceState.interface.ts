@@ -1,5 +1,5 @@
 export interface IInstanceState {
-  instanceState:
+  stateInstance:
     | "authorized"
     | "notAuthorized"
     | "blocked"

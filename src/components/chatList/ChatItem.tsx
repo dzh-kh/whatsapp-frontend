@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import styles from "./chatItem.module.scss";
-import IChat from "../../../types/chat.interface";
+import styles from "./chat.module.scss";
+import IChat from "../../types/chat.interface";
 
 export interface IChatProps {
   chatData: IChat;
@@ -20,6 +20,7 @@ const ChatItem: FC<IChatProps> = ({ chatData, currentChat, handleClick }) => {
         }
         onClick={() => {
           handleClick(chatId);
+
           // setUnreadMsgCount(0);
         }}
       >

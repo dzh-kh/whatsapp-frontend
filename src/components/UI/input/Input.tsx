@@ -3,7 +3,7 @@ import React, { FC, forwardRef } from "react";
 import "./input.scss";
 import IInputProps from "./types";
 
-const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
+const Input: FC<any> = forwardRef<HTMLInputElement, IInputProps>(
   ({ children, name, error, ...props }, ref) => {
     return (
       <>

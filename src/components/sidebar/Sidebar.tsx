@@ -8,8 +8,10 @@ const Sidebar: FC = () => {
   return (
     <div className={styles.sidebar}>
       <SidebarHeader />
-      <SearchBar />
-      <ChatList />
+      <div className={styles.container}>
+        <SearchBar />
+        <ChatList />
+      </div>
     </div>
   );
 };

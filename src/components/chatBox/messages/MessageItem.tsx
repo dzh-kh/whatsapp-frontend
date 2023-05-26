@@ -34,7 +34,7 @@ const MessageItem: FC<IProps> = ({ message }) => {
               fontSize="large"
             />
           )}
-          {statusMessage === "pending" && (
+          {(statusMessage === "pending" || statusMessage === "sent") && (
             <CiClock2
               className={styles.message_status__pending}
               fontSize="large"

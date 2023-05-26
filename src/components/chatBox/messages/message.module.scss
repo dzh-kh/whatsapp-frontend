@@ -16,13 +16,13 @@
   .button {
     position: absolute;
     right: 0;
-    top: 30%;
+    top: 25%;
   }
   input {
     font-size: 16px;
     background-color: white !important;
     height: 42px;
-    margin-right: 20px;
+    margin-right: 35px;
     border-radius: 8px;
   }
 }
@@ -38,6 +38,7 @@
   }
 }
 .message_item {
+  margin-bottom: 5px;
   font-size: 15px;
   display: flex;
   flex-wrap: nowrap;
@@ -82,4 +83,14 @@
 .message_status__delivered,
 .message_status__pending {
   fill: $light-gray;
+}
+
+.list_wrapper {
+  max-height: 83vh;
+  overflow: scroll;
+  position: relative;
+  padding: 10px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

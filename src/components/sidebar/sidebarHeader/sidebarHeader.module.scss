@@ -1,17 +1,11 @@
 @import "../../../assets/styles/variables";
 
 .header {
-  padding: 10px 16px;
+  padding: 20px 16px;
   background-color: $app-bg;
   height: 60px;
-}
-
-.user_block {
   display: flex;
-  justify-content: space-between;
-
-  padding: 10px 0;
-
+  justify-content: flex-end;
   svg {
     color: $gray;
   }
@@ -24,7 +18,7 @@
 .menu {
   position: absolute;
   padding: 0.5rem 0;
-  width: 240px;
+  max-width: 240px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;

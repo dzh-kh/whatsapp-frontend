@@ -3,48 +3,47 @@ import { FaSearch } from "react-icons/fa";
 import styles from "./searchBar.module.scss";
 import Input from "../../UI/input/Input";
 import useActions from "../../../hooks/useActions";
+import InputMask from "react-input-mask";
+import { useAppSelector } from "../../../hooks";
+import getChatId from "../../../utils/functions/getChatId";
 
 const SearchBar: FC = () => {
   const [number, setNumber] = useState("");
-  const [validationError, setValidationError] = useState<string | null>();
+  const chats = useAppSelector((state) => state.chat.chats);
   const { fetchChat } = useActions();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNumber(e.target.value);
   };
-  const hadleClick = (e: React.MouseEvent<SVGAElement>) => {
-    const id = number.replace(/[^0-9]/g, "");
-    if (id.length < 11) {
-      setValidationError("Введите полный номер");
-    } else {
-      setValidationError("");
+
+  const searchCb = (e: any) => {
+    const phone = number.replace(/[^0-9]/g, "");
+    const chatId = getChatId(phone);
+
+    const isChatExist = chats.filter((chat) => chat.chatId === chatId);
+    if (chatId.length >= 16 && !isChatExist.length) {
       setNumber("");
-      fetchChat(id);
+      fetchChat(chatId);
     }
   };
 
-  const handleKeyDown = (e: any) => {
-    if (e.key === "Enter") {
-      const id = number.replace(/[^0-9]/g, "");
-      if (id.length < 11) {
-        setValidationError("Введите полный номер");
-      } else {
-        setValidationError("");
-        setNumber("");
-        fetchChat(id);
-      }
-    }
-  };
+  const handleClick = (e: React.MouseEvent<SVGAElement>) => searchCb(e);
+
+  const handleKeyDown = (e: any) => e.key === "Enter" && searchCb(e);
+
   return (
     <div className={styles.wrapper}>
-      <Input
-        onKeyDown={handleKeyDown}
-        placeholder="Ввведите номер телефона"
+      <InputMask
+        mask="+7 (999) 999-99-99"
         value={number}
         onChange={handleChange}
-        error={validationError}
+        onKeyDown={handleKeyDown}
       >
-        <FaSearch onClick={hadleClick} />
-      </Input>
+        {(inputProps: any) => (
+          <Input {...inputProps} placeholder="Введите номер телефона">
+            <FaSearch onClick={handleClick} />
+          </Input>
+        )}
+      </InputMask>
     </div>
   );
 };

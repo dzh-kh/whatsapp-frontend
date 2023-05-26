@@ -3,33 +3,26 @@ import styles from "./message.module.scss";
 import { IoSendSharp } from "react-icons/io5";
 import Input from "../../UI/input/Input";
 
-const AddMessage: FC<any> = ({ addMessage }) => {
+const AddMessage: FC<{ addMessage: Function }> = ({ addMessage }) => {
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const handleSubmit = (event: any) => {
-    // event.preventDefault();
+
+  const submitCb = (e: any) => {
     addMessage(message);
     setMessage("");
     inputRef?.current?.focus();
   };
+  const handleSubmit = (e: any) => submitCb(e);
 
-  const handleKeyDown = (e: any) => {
-    if (e.key === "Enter") {
-      addMessage(message);
-      setMessage("");
-      inputRef?.current?.focus();
-    }
-  };
-  // useEffect();
+  const handleKeyDown = (e: any) => e.key === "Enter" && submitCb(e);
 
   return (
     <div className={styles.form_wrapper}>
-      {/* <form className={styles.add_message_form}> */}
       <Input
         type="text"
         placeholder="Write a message..."
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(e: any) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
         ref={inputRef}
       >
@@ -37,7 +30,6 @@ const AddMessage: FC<any> = ({ addMessage }) => {
           <IoSendSharp />
         </button>
       </Input>
-      {/* </form> */}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-@import "../../../assets/styles/variables";
+@import "../../assets/styles/variables";
 
 .wrapper {
   position: relative;
@@ -38,14 +38,6 @@
   align-items: center;
   width: 100%;
   padding: 0.3rem;
-  // border-bottom: 1px solid $app-bg;
-
-  // span {
-  //   background: #fff;
-  //   border-radius: 50%;
-  //   padding: 0.2rem 0.5rem;
-  //   margin-right: 0.2rem;
-  // }
 }
 .chat_name {
   margin-right: 1rem;
@@ -53,4 +45,16 @@
 .avatar {
   border-radius: 50%;
   margin: 0 1rem;
+}
+
+.list_wrapper {
+  max-height: 83vh;
+  overflow: scroll;
+  position: relative;
+}
+
+.empty_list {
+  padding: 72px 50px;
+  margin: auto auto;
+  width: fit-content;
 }

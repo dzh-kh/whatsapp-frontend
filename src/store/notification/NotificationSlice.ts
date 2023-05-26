@@ -1,10 +1,10 @@
 import IChat from "../../types/chat.interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { fetchChat } from "./ChatActionCreators";
+import { fetchChat } from "./NotificationActionCreators";
+import { ITextNotification } from "../../types/textNotification.interface";
 
 interface ChatState {
-  chats: IChat[];
-  currentChat: IChat | null;
+  notifications: ITextNotification[];
   isLoading: boolean;
   error: string | null;
 }
