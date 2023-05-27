@@ -2,7 +2,6 @@ import { API_URL_BASE } from "../consts/index";
 import axios from "axios";
 
 export const $api = axios.create({
-  // withCredentials: true,
   baseURL: API_URL_BASE,
   headers: {
     "Access-Control-Allow-Credentials": true,
@@ -24,7 +23,6 @@ function manageErrorConnection(err: any) {
   } else if (err.code === "ECONNREFUSED") {
     return "nevermind";
   } else {
-    console.log(err);
     return Promise.reject({ message: err.message });
   }
 }

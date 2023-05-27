@@ -8,7 +8,6 @@ const PollingIntegrator = () => {
     const interval = setInterval(() => {
       getNotification();
       setCount(count + 1);
-      console.log(count);
     }, 10000);
     return () => clearInterval(interval);
   }, [count]);

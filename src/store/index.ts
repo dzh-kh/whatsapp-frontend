@@ -1,8 +1,4 @@
-import {
-  configureStore,
-  combineReducers,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import ChatSlice from "./chat/ChatSlice";
 import NotificationSlice from "./notification/NotificationSlice";
 

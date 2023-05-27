@@ -5,7 +5,6 @@ import { getNotification } from "./NotificationActionCreators";
 interface NotificationState {
   notifications: {
     incomingMessageReceived: INotification[];
-    // outgoingAPIMessageReceived: INotification[];
     outgoingMessageStatus: INotification[];
   };
   incomingMessageTrigger: boolean;
@@ -15,7 +14,6 @@ interface NotificationState {
 const initialState: NotificationState = {
   notifications: {
     incomingMessageReceived: [],
-    // outgoingAPIMessageReceived: [],
     outgoingMessageStatus: [],
   },
   incomingMessageTrigger: false,
@@ -65,9 +63,6 @@ const NotificationSlice = createSlice({
         }
       }
     },
-    // [getNotification.pending.type]: (state) => {
-    //   state.isLoading = true;
-    // },
   },
 });
 

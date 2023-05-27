@@ -1,13 +1,13 @@
 // import { AppDispatch } from "..";
 // import { ChatService } from "../../api/services/chat.service";
 // import NotificationSlice from "./NotificationSlice";
-// import { getLocalStorage } from "../../utils/functions/getLocalStorage";
+// import { getLocalStorageItem } from "../../utils/functions/getLocalStorageItem";
 
 // export const getNotification = () => async (dispatch: AppDispatch) => {
 //   try {
 //     const notification = await ChatService.receiveNotification();
 //     if (notification?.receiptId) {
-//       const chats = getLocalStorage("chats");
+//       const chats = getLocalStorageItem("chats");
 //       if (
 //         chats?.filter((chat: any) => chat.chatId === notification.chatId)[0]
 //       ) {
@@ -23,7 +23,7 @@
 
 import { ChatService } from "../../api/services/chat.service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getLocalStorage } from "../../utils/functions/getLocalStorage";
+import { getLocalStorageItem } from "../../utils/functions";
 
 export const getNotification = createAsyncThunk(
   "notification/getNotification",
@@ -31,12 +31,13 @@ export const getNotification = createAsyncThunk(
     try {
       const notification = await ChatService.receiveNotification();
       if (notification?.receiptId) {
-        console.log("first barier");
-        const chats = getLocalStorage("chats");
+        console.log("first barrier");
+        const chats = getLocalStorageItem("chats");
+        await ChatService.deleteNotification(notification.receiptId);
         if (
           chats?.filter((chat: any) => chat.chatId === notification.chatId)[0]
         ) {
-          console.log("second barier");
+          console.log("second barrier");
           await ChatService.deleteNotification(notification.receiptId);
           return notification;
         }

@@ -20,8 +20,6 @@ const ChatItem: FC<IChatProps> = ({ chatData, currentChat, handleClick }) => {
         }
         onClick={() => {
           handleClick(chatId);
-
-          // setUnreadMsgCount(0);
         }}
       >
         <img
@@ -33,7 +31,6 @@ const ChatItem: FC<IChatProps> = ({ chatData, currentChat, handleClick }) => {
         />
         <div className={styles.chat_info}>
           <span className={styles.chat_name}>{name}</span>
-          {/* {unreadMsgCount >= 1 && <span>{unreadMsgCount}</span>} */}
         </div>
       </div>
     </div>

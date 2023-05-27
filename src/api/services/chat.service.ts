@@ -3,10 +3,10 @@ import IChat from "../../types/chat.interface";
 import { INotification } from "../../types/notification.interface";
 import { ITextMessage } from "./../../types/textMessage.interface";
 import noAvatar from "../../assets/images/no_avatar.png";
-import { getLocalStorage } from "../../utils/functions/getLocalStorage";
+import { getLocalStorageItem } from "../../utils/functions";
 
 const getBaseUrl = (path: string) => {
-  const user = getLocalStorage("user");
+  const user = getLocalStorageItem("user");
   if (user) {
     return `/waInstance${user.idInstance}/${path}/${user.apiTokenInstance}`;
   }
@@ -14,7 +14,6 @@ const getBaseUrl = (path: string) => {
 };
 
 const _transformNotificationData = (data: any) => {
-  console.log(data);
   return {
     receiptId: data.receiptId,
     type: data.body.typeWebhook,
@@ -82,7 +81,6 @@ export const ChatService = {
       async () => await this.getMessageById(data.idMessage, chatId),
       1000
     );
-    console.log(mg);
     return mg;
   },
 

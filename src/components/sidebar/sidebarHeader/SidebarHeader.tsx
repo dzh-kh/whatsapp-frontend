@@ -3,7 +3,7 @@ import styles from "./sidebarHeader.module.scss";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { useActions, useClickOutside } from "../../../hooks";
 import { useNavigate } from "react-router-dom";
-
+import { LOGIN_PAGE_ROUTE } from "../../../consts";
 const SidebarHeader: FC = () => {
   const menuRef = useRef<any>(null);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -24,7 +24,7 @@ const Menu: FC = () => {
   const handleLogout = () => {
     localStorage.clear();
     resetApp();
-    navigate("/login");
+    navigate(LOGIN_PAGE_ROUTE);
   };
 
   return (

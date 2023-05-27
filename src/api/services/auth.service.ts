@@ -2,7 +2,7 @@ import { IInstanceState } from "../../types/instanceState.interface";
 import { $api } from "../http";
 
 export const AuthService = {
-  async login(
+  async checkInstance(
     idInstance: string,
     apiTokenInstance: string
   ): Promise<IInstanceState> {

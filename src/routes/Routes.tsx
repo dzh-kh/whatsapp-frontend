@@ -1,52 +1,21 @@
-import {
-  createBrowserRouter,
-  redirect,
-  RouterProvider,
-} from "react-router-dom";
-//   import Root, { rootLoader } from "./routes/root";
-//   import Team, { teamLoader } from "./routes/team";
+import { createBrowserRouter } from "react-router-dom";
 import Login from "../pages/login/Login";
 import Main from "../pages/main/Main";
 import { Navigate } from "react-router-dom";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import { useAuth } from "../hooks";
-
+import { LOGIN_PAGE_ROUTE, MAIN_PAGE_ROUTE } from "../consts";
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: LOGIN_PAGE_ROUTE,
     element: <Login />,
-    //   loader: rootLoader,
   },
   {
-    path: "/",
+    path: MAIN_PAGE_ROUTE,
     element: <Main />,
-    //   loader: rootLoader,
   },
   {
     path: "*",
-    element: <Navigate replace to="/" />,
+    element: <Navigate replace to={MAIN_PAGE_ROUTE} />,
   },
 ]);
 
 export default router;
-
-// export const Router = () => {
-//   const isAuth = useAuth();
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route
-//           path="/"
-//           // element={isAuth ? <Main /> : <Navigate to="/login" replace />}
-//           element={<Main />}
-//         />{" "}
-//         <Route
-//           path="/login"
-//           // element={isAuth ? <Navigate to="/" replace /> : <Login />}
-//           element={<Login />}
-//         />
-//         <Route path="*" element={<Navigate replace to="/" />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// };

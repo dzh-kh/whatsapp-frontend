@@ -2,9 +2,9 @@ import React, { FC, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import styles from "./searchBar.module.scss";
 import Input from "../../UI/input/Input";
-import InputMask from "react-input-mask";
+import InputMask, { Props } from "react-input-mask";
 import { useAppSelector, useActions } from "../../../hooks";
-import getChatId from "../../../utils/functions/getChatId";
+import { getChatId } from "../../../utils/functions";
 
 const SearchBar: FC = () => {
   const [number, setNumber] = useState("");
@@ -31,20 +31,25 @@ const SearchBar: FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <InputMask
+      <InputMaskCorrect
         mask="+7 (999) 999-99-99"
         value={number}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
       >
-        {(inputProps: any) => (
+        {(inputProps: Props) => (
           <Input {...inputProps} placeholder="Введите номер телефона">
             <FaSearch onClick={handleClick} />
           </Input>
         )}
-      </InputMask>
+      </InputMaskCorrect>
     </div>
   );
 };
 
 export default SearchBar;
+
+const InputMaskCorrect: FC<any> = ({ children, ...props }) => {
+  const child = children as React.ReactNode;
+  return <InputMask children={child} {...props} />;
+};

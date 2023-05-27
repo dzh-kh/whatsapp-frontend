@@ -3,21 +3,21 @@ import Input from "../../components/UI/input/Input";
 import styles from "./login.module.scss";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../api/services/auth.service";
-import useRequest from "../../hooks/useRequest";
-
+import { useRequest } from "../../hooks";
+import { MAIN_PAGE_ROUTE } from "../../consts";
 const Login: FC = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState<string>("");
   const [idInstance, setIdInstance] = useState<string>("");
-  const { fetch, isLoading, error } = useRequest(async () => {
-    const res = await AuthService.login(idInstance, token);
+  const { fetch, isLoading } = useRequest(async () => {
+    const res = await AuthService.checkInstance(idInstance, token);
     if (res.stateInstance === "authorized") {
       localStorage.setItem(
         "user",
         JSON.stringify({ idInstance, apiTokenInstance: token })
       );
 
-      navigate("/", { replace: true });
+      navigate(MAIN_PAGE_ROUTE, { replace: true });
     }
   });
 
@@ -59,7 +59,6 @@ const Login: FC = () => {
               placeholder="Введите idInstance"
             />
           </div>
-
           <button
             type="submit"
             disabled={isLoading}

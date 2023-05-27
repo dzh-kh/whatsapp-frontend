@@ -3,7 +3,7 @@ import styles from "./message.module.scss";
 import { ITextMessage } from "../../../types/textMessage.interface";
 import { BsCheck2, BsCheck2All } from "react-icons/bs";
 import { CiClock2 } from "react-icons/ci";
-import convertTimestamp from "../../../utils/functions/convertTimestamp";
+import { convertTimestamp } from "../../../utils/functions";
 
 interface IProps {
   message: ITextMessage;

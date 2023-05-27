@@ -7,12 +7,11 @@ import { ChatService } from "../../api/services/chat.service";
 import { useActions, useAppSelector } from "../../hooks";
 import IChat from "../../types/chat.interface";
 import chatbox from "../../assets/images/chatbox.png";
-import useRequest from "../../hooks/useRequest";
+import { useRequest } from "../../hooks";
 import FullPageLoader from "../fullPageLoader/FullPageLoader";
 
 const ChatBox: FC = () => {
   const { currentChat } = useAppSelector((state) => state.chat);
-  console.log(currentChat);
   return (
     <div className={styles.chatbox_wrapper}>
       {currentChat ? (
