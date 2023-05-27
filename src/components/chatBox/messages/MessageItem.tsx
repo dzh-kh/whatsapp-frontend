@@ -1,8 +1,6 @@
 import React, { FC } from "react";
 import styles from "./message.module.scss";
 import { ITextMessage } from "../../../types/textMessage.interface";
-import { BsCheck2, BsCheck2All } from "react-icons/bs";
-import { CiClock2 } from "react-icons/ci";
 import { convertTimestamp } from "../../../utils/functions";
 
 interface IProps {
@@ -22,24 +20,6 @@ const MessageItem: FC<IProps> = ({ message }) => {
         {textMessage}
         <div className={styles.message_item__info}>
           <span className={styles.message_item__time}>{time}</span>
-          {statusMessage === "read" && (
-            <BsCheck2All
-              className={styles.message_status__read}
-              fontSize="large"
-            />
-          )}
-          {type === "outgoing" && statusMessage === "delivered" && (
-            <BsCheck2
-              className={styles.message_status__delivered}
-              fontSize="large"
-            />
-          )}
-          {(statusMessage === "pending" || statusMessage === "sent") && (
-            <CiClock2
-              className={styles.message_status__pending}
-              fontSize="large"
-            />
-          )}
         </div>
       </div>
     </div>

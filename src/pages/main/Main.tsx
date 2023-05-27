@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import ChatBox from "../../components/chatBox/ChatBox";
 import styles from "./main.module.scss";
-import PollingIntegrator from "./PollingIntegrator";
 import { useNavigate } from "react-router-dom";
 import FullPageLoader from "../../components/fullPageLoader/FullPageLoader";
 import { AuthService } from "../../api/services/auth.service";
@@ -41,7 +40,6 @@ const Main: FC = () => {
     <div className={styles.main}>
       <Sidebar />
       <ChatBox />
-      <PollingIntegrator />
     </div>
   );
 };

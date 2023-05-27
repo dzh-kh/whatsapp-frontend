@@ -76,15 +76,6 @@
   }
 }
 
-.message_status__read {
-  fill: $light-blue;
-}
-
-.message_status__delivered,
-.message_status__pending {
-  fill: $light-gray;
-}
-
 .list_wrapper {
   max-height: 83vh;
   overflow: scroll;

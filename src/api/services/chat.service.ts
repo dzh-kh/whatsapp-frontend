@@ -19,10 +19,10 @@ const _transformNotificationData = (data: any) => {
     type: data.body.typeWebhook,
     chatId: data.body?.chatId ? data.body.chatId : data.body.senderData.chatId,
     messageStatus: data.body.status,
-    messageText: data.body?.messageData
+    textMessage: data.body?.messageData
       ? data.body?.messageData?.textMessageData?.textMessage
       : null,
-    messageId: data.body.idMessage,
+    idMessage: data.body.idMessage,
     timestamp: data.body.timestamp,
   };
 };
@@ -40,6 +40,7 @@ const _transformChatData = (data: any) => {
     ...data,
     avatar: data.avatar ? data.avatar : noAvatar,
     name: data.name ? data.name : `8${data.chatId.slice(1, 11)}`,
+    history: [],
   };
 };
 
@@ -48,16 +49,6 @@ export const ChatService = {
     const baseUrl = getBaseUrl("getContactInfo");
     const { data } = await $api.post(`${baseUrl}`, { chatId });
     return _transformChatData(data);
-  },
-
-  async getChatHistory(chatId: string, count = 10): Promise<ITextMessage[]> {
-    const baseUrl = getBaseUrl("GetChatHistory");
-    const { data } = await $api.post(`${baseUrl}`, { chatId, count });
-    return data
-      .filter((mg: ITextMessage) =>
-        mg?.typeMessage?.toLowerCase().includes("text")
-      )
-      .reverse();
   },
 
   async readChat(chatId: string): Promise<void> {
@@ -87,6 +78,7 @@ export const ChatService = {
   async receiveNotification(): Promise<INotification> {
     const baseUrl = getBaseUrl("ReceiveNotification");
     const { data } = await $api.get(`${baseUrl}`);
+    console.log(data);
     const newData = data ? _transformNotificationData(data) : data;
     return newData;
   },

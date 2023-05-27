@@ -2,8 +2,7 @@ export interface INotification {
   receiptId: number;
   type: string;
   chatId: string;
-  messageStatus?: string;
-  messageText: string;
-  messageId: string;
+  textMessage: string;
+  idMessage: string;
   timestamp: number;
 }

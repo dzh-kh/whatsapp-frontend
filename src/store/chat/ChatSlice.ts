@@ -2,6 +2,7 @@ import IChat from "../../types/chat.interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { fetchChat } from "./ChatActionCreators";
 import { getLocalStorageItem } from "../../utils/functions";
+import { ITextMessage } from "../../types/textMessage.interface";
 interface ChatState {
   chats: IChat[];
   currentChat: IChat | null;
@@ -24,6 +25,15 @@ const ChatSlice = createSlice({
       state.currentChat = state.chats.filter(
         (chat) => chat.chatId === action.payload
       )[0];
+    },
+
+    setChatHistory(state, action: PayloadAction<ITextMessage[]>) {
+      const history = action.payload;
+      state.chats.forEach((i, index) => {
+        if (i.chatId === history[0]?.chatId) {
+          state.chats[index].history = history;
+        }
+      });
     },
   },
   extraReducers: {

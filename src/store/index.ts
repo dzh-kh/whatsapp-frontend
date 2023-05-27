@@ -1,15 +1,14 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import ChatSlice from "./chat/ChatSlice";
-import NotificationSlice from "./notification/NotificationSlice";
 
 const allReducers = combineReducers({
   chat: ChatSlice.reducer,
-  notification: NotificationSlice.reducer,
 });
 
 const rootReducer = (state: any, action: any) => {
   if (action.type === "RESET_APP") {
     state = undefined;
+    console.log(state);
   }
   return allReducers(state, action);
 };

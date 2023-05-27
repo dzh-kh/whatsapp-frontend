@@ -7,8 +7,6 @@ import { ChatService } from "../../api/services/chat.service";
 import { useActions, useAppSelector } from "../../hooks";
 import IChat from "../../types/chat.interface";
 import chatbox from "../../assets/images/chatbox.png";
-import { useRequest } from "../../hooks";
-import FullPageLoader from "../fullPageLoader/FullPageLoader";
 
 const ChatBox: FC = () => {
   const { currentChat } = useAppSelector((state) => state.chat);
@@ -28,65 +26,37 @@ export default React.memo(ChatBox);
 const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
   const { avatar, name, chatId, lastSeen } = currentChat;
   const [messages, setMessages] = useState<ITextMessage[] | []>([]);
-  const { notifications, incomingMessageTrigger, outgoingStatusTrigger } =
-    useAppSelector((state) => state.notification);
-  const { incomingMessageReceived, outgoingMessageStatus } = notifications;
-
-  const { removeNotifications } = useActions();
-  const { fetch, isLoading } = useRequest(async () => {
-    const textChatHistory = await ChatService.getChatHistory(
-      currentChat.chatId
-    );
-    setMessages(textChatHistory);
-  });
-
+  const [count, setCount] = useState(0);
+  const { setChatHistory } = useActions();
   useEffect(() => {
-    setMessages([]);
-    removeNotifications(currentChat.chatId);
-    fetch();
+    setChatHistory(messages);
+    setMessages(currentChat.history ? currentChat.history : []);
   }, [currentChat]);
 
   useEffect(() => {
-    incomingMessageReceived.filter((not) => {
-      if (not.chatId === currentChat.chatId) {
-        const isMessageThere = messages.filter(
-          (i) => i.idMessage === not.messageId
-        )[0];
-        if (!isMessageThere) {
-          const mg = {
-            textMessage: not.messageText,
-            timestamp: not.timestamp,
-            type: "incoming",
-            idMessage: not.messageId,
-          };
-          setMessages([...messages, mg]);
-        }
-      }
-    });
-
-    ChatService.readChat(currentChat.chatId);
-    removeNotifications(currentChat.chatId);
-  }, [incomingMessageTrigger]);
-
-  useEffect(() => {
-    outgoingMessageStatus.filter((not) => {
-      if (not.chatId === currentChat.chatId) {
-        messages.forEach((i) => {
-          if (i.idMessage === not.messageId) {
-            i.statusMessage = not.messageStatus;
+    const interval = setInterval(() => {
+      ChatService.receiveNotification()
+        .then((res) => {
+          if (
+            res?.receiptId &&
+            chatId === res?.chatId &&
+            res.type === "incomingMessageReceived"
+          ) {
+            ChatService.deleteNotification(res.receiptId);
+            setMessages([...messages, { ...res, type: "incoming" }]);
+            ChatService.readChat(chatId);
           }
-          return i;
-        });
-        setMessages(messages);
-      }
-    });
-    removeNotifications(currentChat.chatId);
-  }, [outgoingStatusTrigger]);
+        })
+        .catch((e: any) => console.log(e));
+      setCount(count + 1);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [count]);
 
   const handleAddMessage = (value: string) => {
-    ChatService.sendMessage(chatId, value).then((res) =>
-      setMessages([...messages, res])
-    );
+    ChatService.sendMessage(chatId, value)
+      .then((res) => setMessages([...messages, res]))
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -98,7 +68,7 @@ const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
           <span>{lastSeen}</span>
         </div>
       </header>
-      {isLoading ? <FullPageLoader /> : <Messages messages={messages} />}
+      <Messages messages={messages} />
       <AddMessage addMessage={(value: string) => handleAddMessage(value)} />
     </div>
   );
