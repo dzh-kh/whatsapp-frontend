@@ -5,19 +5,21 @@ import { getNotification } from "./NotificationActionCreators";
 interface NotificationState {
   notifications: {
     incomingMessageReceived: INotification[];
-    outgoingAPIMessageReceived: INotification[];
+    // outgoingAPIMessageReceived: INotification[];
     outgoingMessageStatus: INotification[];
   };
-  newMessageTrigger: boolean;
+  incomingMessageTrigger: boolean;
+  outgoingStatusTrigger: boolean;
 }
 
 const initialState: NotificationState = {
   notifications: {
     incomingMessageReceived: [],
-    outgoingAPIMessageReceived: [],
+    // outgoingAPIMessageReceived: [],
     outgoingMessageStatus: [],
   },
-  newMessageTrigger: false,
+  incomingMessageTrigger: false,
+  outgoingStatusTrigger: false,
 };
 
 const NotificationSlice = createSlice({
@@ -55,7 +57,11 @@ const NotificationSlice = createSlice({
           state.notifications[type as keyof typeof state.notifications].push(
             action.payload
           );
-          state.newMessageTrigger = !state.newMessageTrigger;
+          if (type === "incomingMessageTrigger") {
+            state.incomingMessageTrigger = !state.incomingMessageTrigger;
+          } else {
+            state.outgoingStatusTrigger = !state.outgoingStatusTrigger;
+          }
         }
       }
     },

@@ -29,10 +29,9 @@ export default React.memo(ChatBox);
 const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
   const { avatar, name, chatId, lastSeen } = currentChat;
   const [messages, setMessages] = useState<ITextMessage[] | []>([]);
-  const { notifications, newMessageTrigger } = useAppSelector(
-    (state) => state.notification
-  );
-  const incomingMessages = notifications.incomingMessageReceived;
+  const { notifications, incomingMessageTrigger, outgoingStatusTrigger } =
+    useAppSelector((state) => state.notification);
+  const { incomingMessageReceived, outgoingMessageStatus } = notifications;
 
   const { removeNotifications } = useActions();
   const { fetch, isLoading } = useRequest(async () => {
@@ -49,7 +48,7 @@ const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
   }, [currentChat]);
 
   useEffect(() => {
-    incomingMessages.filter((not) => {
+    incomingMessageReceived.filter((not) => {
       if (not.chatId === currentChat.chatId) {
         const isMessageThere = messages.filter(
           (i) => i.idMessage === not.messageId
@@ -68,32 +67,60 @@ const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
 
     ChatService.readChat(currentChat.chatId);
     removeNotifications(currentChat.chatId);
-  }, [newMessageTrigger]);
+  }, [incomingMessageTrigger]);
+
+  useEffect(() => {
+    outgoingMessageStatus.filter((not) => {
+      if (not.chatId === currentChat.chatId) {
+        messages.forEach((i) => {
+          if (i.idMessage === not.messageId) {
+            i.statusMessage = not.messageStatus;
+          }
+          return i;
+        });
+        setMessages(messages);
+      }
+    });
+    removeNotifications(currentChat.chatId);
+  }, [outgoingStatusTrigger]);
+
+  // const handleAddMessage = (value: string) => {
+  //   const lastmg = {
+  //     textMessage: value,
+  //     timestamp: Math.floor(Date.now() / 1000),
+  //     type: "outgoing",
+  //     idMessage: `templeId${Date.now()}`,
+  //     statusMessage: "pending",
+  //   };
+  //   setMessages([...messages, lastmg]);
+  //   // ChatService.sendMessage(chatId, value).then(res => setMessages([...messages, res]))
+  //   ChatService.sendMessage(chatId, value).then((res) => {
+  //     console.log(messages);
+  //     let changedMg = messages.map((i) => {
+  //       if (i.timestamp === res.timestamp) {
+  //         i.statusMessage = res.statusMessage;
+  //         i.idMessage = res.messageId;
+  //         console.log(i);
+  //       }
+  //       return i;
+  //     });
+  //     console.log(changedMg);
+  //     setMessages(changedMg);
+  //   });
+  // };
 
   const handleAddMessage = (value: string) => {
-    const lastmg = {
-      textMessage: value,
-      timestamp: Date.now(),
-      type: "outgoing",
-      idMessage: `templeId${Date.now()}`,
-      statusMessage: "pending",
-    };
-    setMessages([...messages, lastmg]);
-    console.log(lastmg);
-    // ChatService.sendMessage(chatId, value);
-    ChatService.sendMessage(chatId, value).then((res) => {
-      // let lastMessage = messages[messages.length - 1];
-      console.log(res);
-      // let changedMg = messages.map((i) => {
-      //   if (i.timestamp === res.timestamp) {
-      //     i.statusMessage = res.statusMessage;
-      //     console.log(i);
-      //   }
-      //   return i;
-      // });
-      // console.log(changedMg);
-      // setMessages(changedMg);
-    });
+    // const lastmg = {
+    //   textMessage: value,
+    //   timestamp: Math.floor(Date.now() / 1000),
+    //   type: "outgoing",
+    //   idMessage: `templeId${Date.now()}`,
+    //   statusMessage: "pending",
+    // };
+    // setMessages([...messages, lastmg]);
+    ChatService.sendMessage(chatId, value).then((res) =>
+      setMessages([...messages, res])
+    );
   };
 
   return (

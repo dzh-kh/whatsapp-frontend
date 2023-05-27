@@ -80,7 +80,7 @@ export const ChatService = {
     const { data } = await $api.post(`${baseUrl}`, { chatId, message });
     const mg = await setTimerForAsyncFn(
       async () => await this.getMessageById(data.idMessage, chatId),
-      2000
+      1000
     );
     console.log(mg);
     return mg;
