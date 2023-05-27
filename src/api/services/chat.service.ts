@@ -3,33 +3,29 @@ import IChat from "../../types/chat.interface";
 import { INotification } from "../../types/notification.interface";
 import { ITextMessage } from "./../../types/textMessage.interface";
 import noAvatar from "../../assets/images/no_avatar.png";
+import { getLocalStorage } from "../../utils/functions/getLocalStorage";
 
 const getBaseUrl = (path: string) => {
-  const user = localStorage.getItem("user");
+  const user = getLocalStorage("user");
   if (user) {
-    const userData = JSON.parse(user);
-    return `/waInstance${userData.idInstance}/${path}/${userData.apiTokenInstance}`;
+    return `/waInstance${user.idInstance}/${path}/${user.apiTokenInstance}`;
   }
   return "";
 };
 
-const _transformMessageData = (data: any) => {
-  const obj = {
-    incomingMessageReceived: [],
-    outgoingMessageReceived: [],
-    outgoingAPIMessageReceived: [],
-    outgoingMessageStatus: [],
+const _transformNotificationData = (data: any) => {
+  console.log(data);
+  return {
+    receiptId: data.receiptId,
+    type: data.body.typeWebhook,
+    chatId: data.body?.chatId ? data.body.chatId : data.body.senderData.chatId,
+    messageStatus: data.body.status,
+    messageText: data.body?.messageData
+      ? data.body?.messageData?.textMessageData?.textMessage
+      : null,
+    messageId: data.body.idMessage,
+    timestamp: data.body.timestamp,
   };
-  // return {
-  //   receiptId: data.receptId,
-  //   chatId: data.body.senderData.chatId,
-  //   textMessage?: string;
-  //   receiptId: number;
-  //   chatId: string;
-  //   typeWebhook: string;
-  //   status?: string;
-  //   textMessage: data.body.messageData.textMessageData.textMessage,
-  // };
 };
 
 function setTimerForAsyncFn(callback: any, ms: number) {
@@ -93,7 +89,8 @@ export const ChatService = {
   async receiveNotification(): Promise<INotification> {
     const baseUrl = getBaseUrl("ReceiveNotification");
     const { data } = await $api.get(`${baseUrl}`);
-    return data;
+    const newData = data ? _transformNotificationData(data) : data;
+    return newData;
   },
 
   async deleteNotification(receptId: number): Promise<void> {

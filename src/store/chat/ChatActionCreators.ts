@@ -1,4 +1,3 @@
-import { AppDispatch } from "..";
 import { ChatService } from "../../api/services/chat.service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 

@@ -1,17 +1,16 @@
 import IChat from "../../types/chat.interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { fetchChat } from "./ChatActionCreators";
-
+import { getLocalStorage } from "../../utils/functions/getLocalStorage";
 interface ChatState {
   chats: IChat[];
   currentChat: IChat | null;
   isLoading: boolean;
   error: string | null;
 }
-const chats = localStorage.getItem("chats");
-const chatList = chats ? JSON.parse(chats) : [];
+const chats = getLocalStorage("chats");
 const initialState: ChatState = {
-  chats: chatList,
+  chats: chats ? chats : [],
   currentChat: null,
   isLoading: false,
   error: null,

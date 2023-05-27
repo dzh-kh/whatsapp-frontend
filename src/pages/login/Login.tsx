@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FC, useEffect, useState } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import Input from "../../components/UI/input/Input";
 import styles from "./login.module.scss";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../api/services/auth.service";
 import useRequest from "../../hooks/useRequest";
 
@@ -32,7 +32,7 @@ const Login: FC = () => {
     e.preventDefault();
     fetch();
   };
-  // if (localStorage.getItem("user")) return <Navigate to={"/"} />;
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.window}>

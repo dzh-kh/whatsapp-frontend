@@ -4,7 +4,7 @@ import AddMessage from "./messages/AddMessage";
 import styles from "./chatBox.module.scss";
 import { ITextMessage } from "../../types/textMessage.interface";
 import { ChatService } from "../../api/services/chat.service";
-import { useAppSelector } from "../../hooks";
+import { useActions, useAppSelector } from "../../hooks";
 import IChat from "../../types/chat.interface";
 import chatbox from "../../assets/images/chatbox.png";
 import useRequest from "../../hooks/useRequest";
@@ -29,62 +29,71 @@ export default React.memo(ChatBox);
 const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
   const { avatar, name, chatId, lastSeen } = currentChat;
   const [messages, setMessages] = useState<ITextMessage[] | []>([]);
-  const notifications = useAppSelector(
-    (state) => state.notification.notifications
+  const { notifications, newMessageTrigger } = useAppSelector(
+    (state) => state.notification
   );
+  const incomingMessages = notifications.incomingMessageReceived;
+
+  const { removeNotifications } = useActions();
   const { fetch, isLoading } = useRequest(async () => {
     const textChatHistory = await ChatService.getChatHistory(
       currentChat.chatId
     );
-    await ChatService.readChat(currentChat.chatId);
-    console.log(textChatHistory);
     setMessages(textChatHistory);
   });
+
   useEffect(() => {
     setMessages([]);
+    removeNotifications(currentChat.chatId);
     fetch();
   }, [currentChat]);
 
   useEffect(() => {
-    notifications.filter((not) => {
-      console.log(not);
-      if (not.body?.senderData.chatId === currentChat.chatId) {
-        const mg = {
-          textMessage: not?.body?.messageData?.textMessageData.textMessage,
-          timestamp: not.body.timestamp,
-          type: "incoming",
-          idMessage: not.body.idMessage,
-        };
-        setMessages([...messages, mg]);
+    incomingMessages.filter((not) => {
+      if (not.chatId === currentChat.chatId) {
+        const isMessageThere = messages.filter(
+          (i) => i.idMessage === not.messageId
+        )[0];
+        if (!isMessageThere) {
+          const mg = {
+            textMessage: not.messageText,
+            timestamp: not.timestamp,
+            type: "incoming",
+            idMessage: not.messageId,
+          };
+          setMessages([...messages, mg]);
+        }
       }
     });
-  }, [notifications]);
+
+    ChatService.readChat(currentChat.chatId);
+    removeNotifications(currentChat.chatId);
+  }, [newMessageTrigger]);
 
   const handleAddMessage = (value: string) => {
-    setMessages([
-      ...messages,
-      {
-        textMessage: value,
-        timestamp: Date.now(),
-        type: "outgoing",
-        idMessage: `templeId${Date.now()}`,
-        statusMessage: "pending",
-      },
-    ]);
-    ChatService.sendMessage(chatId, value);
-    // ChatService.sendMessage(chatId, value).then((res) => {
-    //   // let lastMessage = messages[messages.length - 1];
-    //   console.log(messages);
-    //   let changedMg = messages.map((i) => {
-    //     if (i.timestamp === res.timestamp) {
-    //       i.statusMessage = res.statusMessage;
-    //       console.log(i);
-    //     }
-    //     return i;
-    //   });
-    //   console.log(changedMg);
-    //   setMessages(changedMg);
-    // });
+    const lastmg = {
+      textMessage: value,
+      timestamp: Date.now(),
+      type: "outgoing",
+      idMessage: `templeId${Date.now()}`,
+      statusMessage: "pending",
+    };
+    setMessages([...messages, lastmg]);
+    console.log(lastmg);
+    // ChatService.sendMessage(chatId, value);
+    ChatService.sendMessage(chatId, value).then((res) => {
+      // let lastMessage = messages[messages.length - 1];
+      console.log(res);
+      // let changedMg = messages.map((i) => {
+      //   if (i.timestamp === res.timestamp) {
+      //     i.statusMessage = res.statusMessage;
+      //     console.log(i);
+      //   }
+      //   return i;
+      // });
+      // console.log(changedMg);
+      // setMessages(changedMg);
+    });
   };
 
   return (
