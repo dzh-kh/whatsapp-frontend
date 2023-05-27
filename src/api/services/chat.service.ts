@@ -1,7 +1,6 @@
 import { $api } from "../http";
-import getChatId from "../../utils/functions/getChatId";
 import IChat from "../../types/chat.interface";
-import { ITextNotification } from "../../types/textNotification.interface";
+import { INotification } from "../../types/notification.interface";
 import { ITextMessage } from "./../../types/textMessage.interface";
 import noAvatar from "../../assets/images/no_avatar.png";
 
@@ -15,11 +14,22 @@ const getBaseUrl = (path: string) => {
 };
 
 const _transformMessageData = (data: any) => {
-  return {
-    receiptId: data.receptId,
-    chatId: data.body.senderData.chatId,
-    textMessage: data.body.messageData.textMessageData.textMessage,
+  const obj = {
+    incomingMessageReceived: [],
+    outgoingMessageReceived: [],
+    outgoingAPIMessageReceived: [],
+    outgoingMessageStatus: [],
   };
+  // return {
+  //   receiptId: data.receptId,
+  //   chatId: data.body.senderData.chatId,
+  //   textMessage?: string;
+  //   receiptId: number;
+  //   chatId: string;
+  //   typeWebhook: string;
+  //   status?: string;
+  //   textMessage: data.body.messageData.textMessageData.textMessage,
+  // };
 };
 
 function setTimerForAsyncFn(callback: any, ms: number) {
@@ -48,7 +58,11 @@ export const ChatService = {
   async getChatHistory(chatId: string, count = 10): Promise<ITextMessage[]> {
     const baseUrl = getBaseUrl("GetChatHistory");
     const { data } = await $api.post(`${baseUrl}`, { chatId, count });
-    return data;
+    return data
+      .filter((mg: ITextMessage) =>
+        mg?.typeMessage?.toLowerCase().includes("text")
+      )
+      .reverse();
   },
 
   async readChat(chatId: string): Promise<void> {
@@ -70,16 +84,16 @@ export const ChatService = {
     const { data } = await $api.post(`${baseUrl}`, { chatId, message });
     const mg = await setTimerForAsyncFn(
       async () => await this.getMessageById(data.idMessage, chatId),
-      5000
+      2000
     );
     console.log(mg);
     return mg;
   },
 
-  async receiveNotification(): Promise<ITextNotification> {
+  async receiveNotification(): Promise<INotification> {
     const baseUrl = getBaseUrl("ReceiveNotification");
     const { data } = await $api.get(`${baseUrl}`);
-    return _transformMessageData(data);
+    return data;
   },
 
   async deleteNotification(receptId: number): Promise<void> {

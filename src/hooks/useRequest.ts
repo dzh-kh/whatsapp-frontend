@@ -9,7 +9,6 @@ export default function useRequest(callback: any) {
       setError(null);
       return callback()
         .catch((e: any) => {
-          console.log(e);
           const error = e.response ? e.response.message : e.message;
           const elem = document.createElement("div");
           elem.classList.add("error");

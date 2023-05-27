@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import ChatItem from "./ChatItem";
-import useActions from "../../hooks/useActions";
-import { useAppSelector } from "../../hooks";
+import { useAppSelector, useActions } from "../../hooks";
 import styles from "./chat.module.scss";
 
 const ChatList: FC = () => {
@@ -12,6 +11,7 @@ const ChatList: FC = () => {
     setCurrentChat(id);
     changeCurrentChat(id);
   };
+
   const list = chats.map((chat) => (
     <ChatItem
       key={chat.chatId}

@@ -1,29 +1,16 @@
 import { AppDispatch } from "..";
 import { ChatService } from "../../api/services/chat.service";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import NotificationSlice from "./NotificationSlice";
 
-// export const getChatInfo =
-//   (chatId: string) => async (dispatch: AppDispatch) => {
-//     const { fetchChatLoading, fetchChatError, fetchChatSuccess } = useActions();
-//     try {
-//       fetchChatLoading();
-//       const chatData = await ChatService.getChatInfo(chatId);
-//       (chatData);
-//       (chatData);
-//       fetchChatSuccess(chatData);
-//     } catch (e: any) {
-//       fetchChatError(e.response.data.message);
-//     }
-//   };
-
-export const fetchChat = createAsyncThunk(
-  "chat/getChat",
-  async (chatId: string, thunkApi) => {
-    try {
-      const chatData = await ChatService.getChatInfo(chatId);
-      return chatData;
-    } catch (e: any) {
-      return thunkApi.rejectWithValue(e.response.data.message);
+export const getNotification = () => async (dispatch: AppDispatch) => {
+  try {
+    const notification = await ChatService.receiveNotification();
+    if (notification?.receiptId) {
+      await ChatService.deleteNotification(notification.receiptId);
+      console.log(notification);
+      dispatch(NotificationSlice.actions.fetchNotification(notification));
     }
+  } catch (e: any) {
+    console.log(e);
   }
-);
+};

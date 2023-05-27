@@ -8,8 +8,10 @@ interface ChatState {
   isLoading: boolean;
   error: string | null;
 }
+const chats = localStorage.getItem("chats");
+const chatList = chats ? JSON.parse(chats) : [];
 const initialState: ChatState = {
-  chats: [],
+  chats: chatList,
   currentChat: null,
   isLoading: false,
   error: null,

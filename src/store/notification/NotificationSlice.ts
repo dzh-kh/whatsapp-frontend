@@ -1,45 +1,29 @@
-import IChat from "../../types/chat.interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { fetchChat } from "./NotificationActionCreators";
-import { ITextNotification } from "../../types/textNotification.interface";
+import { INotification } from "../../types/notification.interface";
 
-interface ChatState {
-  notifications: ITextNotification[];
-  isLoading: boolean;
-  error: string | null;
+interface NotificationState {
+  notifications: INotification[];
 }
-const initialState: ChatState = {
-  chats: [],
-  currentChat: null,
-  isLoading: false,
-  error: null,
+const initialState: NotificationState = {
+  notifications: [],
 };
 
-const ChatSlice = createSlice({
-  name: "Chat",
+const NotificationSlice = createSlice({
+  name: "Notification",
   initialState,
   reducers: {
-    changeCurrentChat(state, action: PayloadAction<string>) {
-      state.currentChat = state.chats.filter(
-        (chat) => chat.chatId === action.payload
-      )[0];
+    removeNotification(state, action: PayloadAction<number>) {
+      state.notifications = state.notifications.filter(
+        (not) => not.receiptId !== action.payload
+      );
     },
-  },
-  extraReducers: {
-    [fetchChat.fulfilled.type]: (state, action: PayloadAction<IChat>) => {
-      state.isLoading = false;
-      state.error = "";
-      state.chats.unshift(action.payload);
-    },
-    [fetchChat.pending.type]: (state) => {
-      state.isLoading = true;
-      state.error = "";
-    },
-    [fetchChat.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.isLoading = false;
-      state.error = action.payload;
+    fetchNotification(state, action: PayloadAction<INotification>) {
+      "incomingMessageReceived";
+      if (action.payload.body.typeWebhook === "incomingMessageReceived") {
+        state.notifications.push(action.payload);
+      }
     },
   },
 });
 
-export default ChatSlice;
+export default NotificationSlice;

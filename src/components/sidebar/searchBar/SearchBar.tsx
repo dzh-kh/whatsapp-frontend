@@ -2,9 +2,8 @@ import React, { FC, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import styles from "./searchBar.module.scss";
 import Input from "../../UI/input/Input";
-import useActions from "../../../hooks/useActions";
 import InputMask from "react-input-mask";
-import { useAppSelector } from "../../../hooks";
+import { useAppSelector, useActions } from "../../../hooks";
 import getChatId from "../../../utils/functions/getChatId";
 
 const SearchBar: FC = () => {
