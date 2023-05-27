@@ -33,16 +33,6 @@ const NotificationSlice = createSlice({
           typedNot.filter((i) => i.chatId === action.payload);
       }
     },
-    // fetchNotification(state, action: PayloadAction<INotification>) {
-    //   const types: string[] = Object.keys(state.notifications);
-    //   for (let type of types) {
-    //     if (type === action.payload.type) {
-    //       state.notifications[type as keyof typeof state.notifications].push(
-    //         action.payload
-    //       );
-    //     }
-    //   }
-    // },
   },
   extraReducers: {
     [getNotification.fulfilled.type]: (
