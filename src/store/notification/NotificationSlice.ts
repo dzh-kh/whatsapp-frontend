@@ -57,7 +57,7 @@ const NotificationSlice = createSlice({
           state.notifications[type as keyof typeof state.notifications].push(
             action.payload
           );
-          if (type === "incomingMessageTrigger") {
+          if (type === "incomingMessageReceived") {
             state.incomingMessageTrigger = !state.incomingMessageTrigger;
           } else {
             state.outgoingStatusTrigger = !state.outgoingStatusTrigger;

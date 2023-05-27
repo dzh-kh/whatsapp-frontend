@@ -84,40 +84,7 @@ const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
     removeNotifications(currentChat.chatId);
   }, [outgoingStatusTrigger]);
 
-  // const handleAddMessage = (value: string) => {
-  //   const lastmg = {
-  //     textMessage: value,
-  //     timestamp: Math.floor(Date.now() / 1000),
-  //     type: "outgoing",
-  //     idMessage: `templeId${Date.now()}`,
-  //     statusMessage: "pending",
-  //   };
-  //   setMessages([...messages, lastmg]);
-  //   // ChatService.sendMessage(chatId, value).then(res => setMessages([...messages, res]))
-  //   ChatService.sendMessage(chatId, value).then((res) => {
-  //     console.log(messages);
-  //     let changedMg = messages.map((i) => {
-  //       if (i.timestamp === res.timestamp) {
-  //         i.statusMessage = res.statusMessage;
-  //         i.idMessage = res.messageId;
-  //         console.log(i);
-  //       }
-  //       return i;
-  //     });
-  //     console.log(changedMg);
-  //     setMessages(changedMg);
-  //   });
-  // };
-
   const handleAddMessage = (value: string) => {
-    // const lastmg = {
-    //   textMessage: value,
-    //   timestamp: Math.floor(Date.now() / 1000),
-    //   type: "outgoing",
-    //   idMessage: `templeId${Date.now()}`,
-    //   statusMessage: "pending",
-    // };
-    // setMessages([...messages, lastmg]);
     ChatService.sendMessage(chatId, value).then((res) =>
       setMessages([...messages, res])
     );
