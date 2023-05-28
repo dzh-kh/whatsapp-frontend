@@ -14,4 +14,4 @@ const Messages: FC<IProps> = ({ messages }) => {
   return <div className={styles.list_wrapper}>{messageList}</div>;
 };
 
-export default Messages;
+export default React.memo(Messages);

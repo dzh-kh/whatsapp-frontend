@@ -34,4 +34,4 @@ const AddMessage: FC<{ addMessage: Function }> = ({ addMessage }) => {
   );
 };
 
-export default AddMessage;
+export default React.memo(AddMessage);

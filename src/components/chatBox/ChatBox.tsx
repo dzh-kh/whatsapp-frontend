@@ -55,7 +55,7 @@ const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
 
   const handleAddMessage = (value: string) => {
     ChatService.sendMessage(chatId, value)
-      .then((res) => setMessages([...messages, res]))
+      .then((res) => setMessages((prev) => [...prev, res]))
       .catch((e) => console.log(e));
   };
 
