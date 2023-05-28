@@ -21,6 +21,7 @@ const Menu: FC = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   useClickOutside(menuRef, () => setMenuIsOpen(false), menuIsOpen);
   const { resetApp } = useActions();
+
   const handleLogout = () => {
     localStorage.clear();
     resetApp();

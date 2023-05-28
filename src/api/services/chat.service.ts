@@ -78,7 +78,6 @@ export const ChatService = {
   async receiveNotification(): Promise<INotification> {
     const baseUrl = getBaseUrl("ReceiveNotification");
     const { data } = await $api.get(`${baseUrl}`);
-    console.log(data);
     const newData = data ? _transformNotificationData(data) : data;
     return newData;
   },

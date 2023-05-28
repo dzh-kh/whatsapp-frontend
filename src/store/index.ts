@@ -6,9 +6,9 @@ const allReducers = combineReducers({
 });
 
 const rootReducer = (state: any, action: any) => {
+  console.log("logout");
   if (action.type === "RESET_APP") {
     state = undefined;
-    console.log(state);
   }
   return allReducers(state, action);
 };

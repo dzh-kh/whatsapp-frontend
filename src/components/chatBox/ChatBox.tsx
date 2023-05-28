@@ -38,12 +38,12 @@ const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
       ChatService.receiveNotification()
         .then((res) => {
           if (
-            res?.receiptId &&
             chatId === res?.chatId &&
-            res.type === "incomingMessageReceived"
+            res?.type === "incomingMessageReceived"
           ) {
             ChatService.deleteNotification(res.receiptId);
-            setMessages([...messages, { ...res, type: "incoming" }]);
+
+            setMessages((prev) => [...prev, { ...res, type: "incoming" }]);
             ChatService.readChat(chatId);
           }
         })
