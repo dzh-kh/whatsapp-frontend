@@ -7,6 +7,7 @@ import { ChatService } from "../../api/services/chat.service";
 import { useActions, useAppSelector } from "../../hooks";
 import IChat from "../../types/chat.interface";
 import chatbox from "../../assets/images/chatbox.png";
+import { getLocalStorageItem } from "../../utils/functions";
 
 const ChatBox: FC = () => {
   const { currentChat } = useAppSelector((state) => state.chat);
@@ -27,35 +28,49 @@ const ChatRoom: FC<{ currentChat: IChat }> = ({ currentChat }) => {
   const { avatar, name, chatId, lastSeen } = currentChat;
   const [messages, setMessages] = useState<ITextMessage[] | []>([]);
   const [count, setCount] = useState(0);
-  const { setChatHistory } = useActions();
+  const { setChatHistoryMessage } = useActions();
   useEffect(() => {
-    setChatHistory(messages);
     setMessages(currentChat.history ? currentChat.history : []);
+    ChatService.readChat(chatId).catch((e) => console.log(e));
   }, [currentChat]);
 
   useEffect(() => {
     const interval = setInterval(() => {
+      const chats = getLocalStorageItem("chats");
       ChatService.receiveNotification()
         .then((res) => {
-          if (
-            chatId === res?.chatId &&
-            res?.type === "incomingMessageReceived"
-          ) {
-            ChatService.deleteNotification(res.receiptId);
-
-            setMessages((prev) => [...prev, { ...res, type: "incoming" }]);
-            ChatService.readChat(chatId);
+          if (res?.type === "incomingMessageReceived") {
+            const newMessage = { ...res, type: "incoming" };
+            if (chats && chats.filter((i: any) => i.chatId === chatId)[0]) {
+              setChatHistoryMessage({
+                message: newMessage,
+                chatId: res.chatId,
+              });
+            }
+            if (chatId === res?.chatId) {
+              setMessages((prev) => [...prev, newMessage]);
+              ChatService.readChat(chatId).catch((e) => console.log(e));
+            }
+            ChatService.deleteNotification(res.receiptId).catch((e) =>
+              console.log(e)
+            );
           }
         })
         .catch((e: any) => console.log(e));
       setCount(count + 1);
     }, 10000);
     return () => clearInterval(interval);
-  }, [count]);
+  }, [count, currentChat]);
 
   const handleAddMessage = (value: string) => {
     ChatService.sendMessage(chatId, value)
-      .then((res) => setMessages((prev) => [...prev, res]))
+      .then((res) => {
+        setMessages((prev) => [...prev, res]);
+        setChatHistoryMessage({
+          message: res,
+          chatId: chatId,
+        });
+      })
       .catch((e) => console.log(e));
   };
 

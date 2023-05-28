@@ -27,11 +27,13 @@ const ChatSlice = createSlice({
       )[0];
     },
 
-    setChatHistory(state, action: PayloadAction<ITextMessage[]>) {
-      const history = action.payload;
+    setChatHistoryMessage(
+      state,
+      action: PayloadAction<{ message: ITextMessage; chatId: string }>
+    ) {
       state.chats.forEach((i, index) => {
-        if (i.chatId === history[0]?.chatId) {
-          state.chats[index].history = history;
+        if (i.chatId === action.payload.chatId) {
+          state.chats[index].history?.push(action.payload.message);
         }
       });
     },
