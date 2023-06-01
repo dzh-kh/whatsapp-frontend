@@ -16,12 +16,15 @@ const Main: FC = () => {
   useEffect(() => {
     let user = getLocalStorageItem("user");
     if (user) {
-      AuthService.checkInstance(user.idInstance, user.apiTokenInstance)
-        .then((res) => {
-          if (res.stateInstance === "authorized") setIsAuth(true);
-        })
-        .catch((e) => console.log(e))
-        .finally(() => setIsLoading(false));
+      setTimeout(() => {
+        AuthService.checkInstance(user.idInstance, user.apiTokenInstance)
+          .then((res) => {
+            console.log(res);
+            if (res.stateInstance === "authorized") setIsAuth(true);
+          })
+          .catch((e) => console.log(e))
+          .finally(() => setIsLoading(false));
+      }, 1000);
     } else {
       setIsLoading(false);
     }
@@ -29,6 +32,8 @@ const Main: FC = () => {
 
   useEffect(() => {
     if (!isLoading && !isAuth) {
+      console.log(isLoading);
+      console.log(isAuth);
       navigate(LOGIN_PAGE_ROUTE);
     }
   }, [isLoading, isAuth]);
